@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
- LS_COLORS = pkgs.fetchgit {
+  LS_COLORS = pkgs.fetchgit {
     url = "https://github.com/trapd00r/LS_COLORS";
     rev = "6fb72eecdcb533637f5a04ac635aa666b736cf50";
     sha256 = "0czqgizxq7ckmqw9xbjik7i1dfwgc1ci8fvp1fsddb35qrqi857a";
@@ -12,21 +12,24 @@ let
     ln -s ${pkgs.coreutils}/bin/dircolors $out/bin/dircolors
     cp ${LS_COLORS}/LS_COLORS $out/share/LS_COLORS
   '';
-	comma = import ( pkgs.fetchFromGitHub {
-				owner = "Shopify";
-				repo = "comma";
-				rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
-				sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
-		}) {};
-in {
-	home.packages = [ ls-colors comma];
+  comma = import
+    (pkgs.fetchFromGitHub {
+      owner = "Shopify";
+      repo = "comma";
+      rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
+      sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
+    })
+    { };
+in
+{
+  home.packages = [ ls-colors comma ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-	programs.bat.enable = true;
+  programs.bat.enable = true;
 
-	programs.direnv.enable = true;
-	programs.direnv.nix-direnv.enable = true;
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -43,40 +46,40 @@ in {
   # changes in each release.
   home.stateVersion = "21.11";
 
-	home.sessionVariables.EDITOR = "vim";
+  home.sessionVariables.EDITOR = "vim";
 
-	programs.zsh = {
-		enable = true;
-		enableCompletion = true;
-		enableAutosuggestions = true;
-		autocd = true;
-		history = {
-        path = "${config.xdg.dataHome}/zsh/.zsh_history";
-        size = 50000;
-        save = 50000;
-		};
-		shellAliases = {
-			ls = "ls --color=auto -F";
-		};
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    autocd = true;
+    history = {
+      path = "${config.xdg.dataHome}/zsh/.zsh_history";
+      size = 50000;
+      save = 50000;
+    };
+    shellAliases = {
+      ls = "ls --color=auto -F";
+    };
 
-		initExtraBeforeCompInit = ''
-			eval $(${pkgs.coreutils}/bin/dircolors -b ${~/.nix-profile/share/LS_COLORS})
-		'';
+    initExtraBeforeCompInit = ''
+      eval $(${pkgs.coreutils}/bin/dircolors -b ${~/.nix-profile/share/LS_COLORS})
+    '';
 
-		initExtra = builtins.readFile ~/home/post-compinit.zsh;
+    initExtra = builtins.readFile ~/home/post-compinit.zsh;
 
 
-		zplug = {
-			enable = true;
-			plugins = [
-				{ name = "zsh-users/zsh-autosuggestions"; }
-				{ name = "zsh-users/zsh-completions"; }
-				{ name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
-				{ name = "zsh-users/zsh-syntax-highlighting"; }
-			];
-		};
+    zplug = {
+      enable = true;
+      plugins = [
+        { name = "zsh-users/zsh-autosuggestions"; }
+        { name = "zsh-users/zsh-completions"; }
+        { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
+        { name = "zsh-users/zsh-syntax-highlighting"; }
+      ];
+    };
 
-	}; # Close zsh
+  }; # Close zsh
 
 
 } # Close all
