@@ -22,7 +22,7 @@ let
     { };
 in
 {
-  home.packages = [ ls-colors comma ];
+  home.packages = [ ls-colors comma pkgs.nixpkgs-fmt ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
