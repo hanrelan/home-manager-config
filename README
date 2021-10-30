@@ -1,0 +1,3 @@
+Symlink home.nix to ~/.config/nixpkgs/home.nix
+Symlink home/ to ~/home
+Run home-manager switch
