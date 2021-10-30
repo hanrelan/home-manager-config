@@ -22,12 +22,18 @@ let
     { };
 in
 {
-  home.packages = [ ls-colors comma pkgs.nixpkgs-fmt ];
+  home.packages = [ 
+    ls-colors # Better colors for ls
+    comma # Comma lets you run commands that you don't have installed by prepending a ,
+    pkgs.nixpkgs-fmt # Format nix files
+  ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # Bat is better cat
   programs.bat.enable = true;
 
+  # Automatically run shell.nix when entering directories
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
