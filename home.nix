@@ -54,9 +54,26 @@ in
 
   home.sessionVariables.EDITOR = "vim";
 
+  programs.neovim = {
+    enable = true;
+    vimAlias = true;
+    extraConfig = builtins.readFile ./home/extraConfig.vim;
+
+    plugins = with pkgs.vimPlugins; [
+      vim-nix
+      vim-airline
+      vim-airline-themes
+
+      # colorscheme
+      molokai
+      gruvbox
+    ];
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+    completionInit = "autoload -U compinit && compinit -D";
     enableAutosuggestions = true;
     autocd = true;
     history = {
