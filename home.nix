@@ -67,6 +67,7 @@ in
       # colorscheme
       molokai
       gruvbox
+      ayu-vim
     ];
   };
 
