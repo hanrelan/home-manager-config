@@ -6,12 +6,6 @@ let
     rev = "6fb72eecdcb533637f5a04ac635aa666b736cf50";
     sha256 = "0czqgizxq7ckmqw9xbjik7i1dfwgc1ci8fvp1fsddb35qrqi857a";
   };
-  ls-colors = pkgs.runCommand "ls-colors" { } ''
-    mkdir -p $out/bin $out/share
-    ln -s ${pkgs.coreutils}/bin/ls $out/bin/ls
-    ln -s ${pkgs.coreutils}/bin/dircolors $out/bin/dircolors
-    cp ${LS_COLORS}/LS_COLORS $out/share/LS_COLORS
-  '';
   comma = import
     (pkgs.fetchFromGitHub {
       owner = "Shopify";
@@ -23,7 +17,6 @@ let
 in
 {
   home.packages = [ 
-    ls-colors # Better colors for ls
     comma # Comma lets you run commands that you don't have installed by prepending a ,
     pkgs.nixpkgs-fmt # Format nix files
   ];
@@ -83,11 +76,11 @@ in
       save = 50000;
     };
     shellAliases = {
-      ls = "ls --color=auto -F";
+      ls = "${pkgs.coreutils}/bin/ls --color=auto -F";
     };
 
     initExtraBeforeCompInit = ''
-      eval $(${pkgs.coreutils}/bin/dircolors -b ${~/.nix-profile/share/LS_COLORS})
+      eval $(${pkgs.coreutils}/bin/dircolors -b ${LS_COLORS}/LS_COLORS)
     '';
 
     initExtra = builtins.readFile ~/home/post-compinit.zsh;

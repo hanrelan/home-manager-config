@@ -15,9 +15,6 @@ if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
 	source ~/.nix-profile/etc/profile.d/nix.sh
 fi
 
-# Get dircolors
-eval $(dircolors ~/.nix-profile/share/LS_COLORS)
-
 # Powerlevel 10k
 if [ -f ~/.p10k.zsh ]; then
 	source ~/.p10k.zsh
