@@ -50,7 +50,7 @@ in
   programs.neovim = {
     enable = true;
     vimAlias = true;
-    extraConfig = builtins.readFile ./home/extraConfig.vim;
+    extraConfig = builtins.readFile ~/home-manager-config/extraConfig.vim;
 
     plugins = with pkgs.vimPlugins; [
       vim-nix
@@ -83,7 +83,7 @@ in
       eval $(${pkgs.coreutils}/bin/dircolors -b ${LS_COLORS}/LS_COLORS)
     '';
 
-    initExtra = builtins.readFile ~/home/post-compinit.zsh;
+    initExtra = builtins.readFile ~/home-manager-config/post-compinit.zsh;
 
 
     zplug = {

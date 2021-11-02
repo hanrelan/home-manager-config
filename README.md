@@ -2,6 +2,7 @@ Run `./install.sh`
 
 Run `home-manager switch`
 
-Change shell to zsh if needed: `chsh -s /bin/zsh`
+Add `/Users/<username>/.nix-profile/bin/zsh` to `/etc/shells`
+Run `chsh -s /Users/<username>/.nix-profile/bin/zsh`
 
 Restart terminal
