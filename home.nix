@@ -99,6 +99,7 @@ in
     };
 
   }; # Close zsh
+  home.file.".p10k.zsh".source = ~/home-manager-config/.p10k.zsh;
 
 
 } # Close all
