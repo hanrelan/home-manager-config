@@ -27,8 +27,10 @@ in
   programs.bat.enable = true;
 
   # Automatically run shell.nix when entering directories
+
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
+  home.sessionVariables.DIRENV_LOG_FORMAT = "";
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
