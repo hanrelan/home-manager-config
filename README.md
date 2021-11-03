@@ -7,3 +7,5 @@ Add `/Users/<username>/.nix-profile/bin/zsh` to `/etc/shells`
 Run `chsh -s /Users/<username>/.nix-profile/bin/zsh`
 
 Restart terminal
+
+(optional): Switch iterm2 font to Fira Code
