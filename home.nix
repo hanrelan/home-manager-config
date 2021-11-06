@@ -26,6 +26,12 @@ in
   # Bat is better cat
   programs.bat.enable = true;
 
+  # Zoxide, a faster way to navigate the filesystem
+  # https://github.com/ajeetdsouza/zoxide
+  # https://rycee.gitlab.io/home-manager/options.html#opt-programs.zoxide.enable
+  programs.zoxide.enable = true;
+
+
   # Automatically run shell.nix when entering directories
 
   programs.direnv.enable = true;
