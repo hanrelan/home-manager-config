@@ -16,9 +16,10 @@ let
     { };
 in
 {
-  home.packages = [ 
+  home.packages = [
     comma # Comma lets you run commands that you don't have installed by prepending a ,
     pkgs.nixpkgs-fmt # Format nix files
+    pkgs.fishPlugins.foreign-env # For fish
   ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -71,6 +72,25 @@ in
       gruvbox
       ayu-vim
     ];
+  };
+
+  programs.fish = {
+    enable = true;
+    plugins = [{
+      name = "foreign-env";
+      src = pkgs.fetchFromGitHub {
+        owner = "oh-my-fish";
+        repo = "plugin-foreign-env";
+        rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
+        sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
+      };
+    }];
+    shellInit = ''
+      # home-manager
+      if test -e ~/.nix-profile/etc/profile.d/nix.sh
+          fenv source ~/.nix-profile/etc/profile.d/nix.sh
+      end
+    '';
   };
 
   programs.zsh = {
