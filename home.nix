@@ -62,6 +62,7 @@ in
 
     plugins = with pkgs.vimPlugins; [
       vim-nix
+      vim-elixir
       vim-airline
       vim-airline-themes
 
