@@ -85,11 +85,15 @@ in
         sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
       };
     }];
+    shellAliases = {
+      ls = "${pkgs.coreutils}/bin/ls --color=auto -F";
+    };
     shellInit = ''
       # home-manager
       if test -e ~/.nix-profile/etc/profile.d/nix.sh
           fenv source ~/.nix-profile/etc/profile.d/nix.sh
       end
+      eval (${pkgs.coreutils}/bin/dircolors -c ${LS_COLORS}/LS_COLORS)
     '';
   };
 
