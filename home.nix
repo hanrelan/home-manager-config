@@ -24,6 +24,9 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # Use fzf finder
+  programs.fzf.enable = true;
+
   # Bat is better cat
   programs.bat.enable = true;
 
