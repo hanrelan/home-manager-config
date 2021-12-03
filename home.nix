@@ -97,6 +97,7 @@ in
           fenv source ~/.nix-profile/etc/profile.d/nix.sh
       end
       eval (${pkgs.coreutils}/bin/dircolors -c ${LS_COLORS}/LS_COLORS)
+      fish_vi_key_bindings
     '';
   };
 
