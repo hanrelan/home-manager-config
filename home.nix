@@ -17,7 +17,7 @@ let
 in
 {
   home.packages = [
-    comma # Comma lets you run commands that you don't have installed by prepending a ,
+    # comma # Comma lets you run commands that you don't have installed by prepending a ,
     pkgs.nixpkgs-fmt # Format nix files
     pkgs.fishPlugins.foreign-env # For fish
   ];
@@ -96,6 +96,10 @@ in
       if test -e ~/.nix-profile/etc/profile.d/nix.sh
           fenv source ~/.nix-profile/etc/profile.d/nix.sh
       end
+      if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+        fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      end
+
       eval (${pkgs.coreutils}/bin/dircolors -c ${LS_COLORS}/LS_COLORS)
       fish_vi_key_bindings
     '';
