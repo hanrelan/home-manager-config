@@ -30,6 +30,9 @@ in
   # Bat is better cat
   programs.bat.enable = true;
 
+  # htop is a better top
+  programs.htop.enable = true;
+
   # Zoxide, a faster way to navigate the filesystem
   # https://github.com/ajeetdsouza/zoxide
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.zoxide.enable
@@ -125,6 +128,12 @@ in
     '';
 
     initExtra = builtins.readFile ~/home-manager-config/post-compinit.zsh;
+
+    profileExtra = ''
+      if [ -f /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
+    '';
 
 
     zplug = {
