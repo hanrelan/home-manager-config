@@ -82,17 +82,20 @@ in
 
   programs.fish = {
     enable = true;
-    plugins = [{
-      name = "foreign-env";
-      src = pkgs.fetchFromGitHub {
-        owner = "oh-my-fish";
-        repo = "plugin-foreign-env";
-        rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
-        sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
-      };
-    }];
+    plugins = [
+      {
+        name = "foreign-env";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-foreign-env";
+          rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
+          sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
+        };
+      }
+    ];
     shellAliases = {
       ls = "${pkgs.coreutils}/bin/ls --color=auto -F";
+      ll = "${pkgs.coreutils}/bin/ls --color=auto -F -l";
     };
     shellInit = ''
       # home-manager
@@ -121,6 +124,7 @@ in
     };
     shellAliases = {
       ls = "${pkgs.coreutils}/bin/ls --color=auto -F";
+      ll = "${pkgs.coreutils}/bin/ls --color=auto -F -l";
     };
 
     initExtraBeforeCompInit = ''
@@ -143,6 +147,7 @@ in
         { name = "zsh-users/zsh-completions"; }
         { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
         { name = "zsh-users/zsh-syntax-highlighting"; }
+        { name = "Aloxaf/fzf-tab"; }
       ];
     };
 
