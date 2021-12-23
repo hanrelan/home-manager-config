@@ -62,6 +62,12 @@ in
 
   home.sessionVariables.EDITOR = "vim";
 
+  programs.git = {
+    enable = true;
+    userName = "Rohan Relan";
+    userEmail = "roresemail@gmail.com";
+  };
+
   programs.neovim = {
     enable = true;
     vimAlias = true;
