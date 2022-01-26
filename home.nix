@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   LS_COLORS = pkgs.fetchgit {
@@ -16,10 +16,17 @@ let
     { };
 in
 {
+  nixpkgs.config = {
+    allowUnfreePredicate = p: builtins.elem (lib.getName p) [
+      "unrar"
+    ];
+  };
   home.packages = [
     # comma # Comma lets you run commands that you don't have installed by prepending a ,
     pkgs.nixpkgs-fmt # Format nix files
     pkgs.fishPlugins.foreign-env # For fish
+    pkgs.unrar
+    pkgs.ripgrep
   ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -37,7 +44,6 @@ in
   # https://github.com/ajeetdsouza/zoxide
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.zoxide.enable
   programs.zoxide.enable = true;
-
 
   # Automatically run shell.nix when entering directories
 
@@ -66,6 +72,11 @@ in
     enable = true;
     userName = "Rohan Relan";
     userEmail = "roresemail@gmail.com";
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
+    };
   };
 
   programs.neovim = {
