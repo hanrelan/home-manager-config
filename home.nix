@@ -1,6 +1,19 @@
 { config, pkgs, lib, ... }:
 
 let
+  curltime = pkgs.writeShellScriptBin "curltime" ''
+    #!${pkgs.stdenv.shell}
+    curl -w @- -o /dev/null -s "$@" <<'EOF'
+        time_namelookup:  %{time_namelookup}\n
+           time_connect:  %{time_connect}\n
+        time_appconnect:  %{time_appconnect}\n
+       time_pretransfer:  %{time_pretransfer}\n
+          time_redirect:  %{time_redirect}\n
+     time_starttransfer:  %{time_starttransfer}\n
+                        ----------\n
+             time_total:  %{time_total}\n
+    EOF
+  '';
   LS_COLORS = pkgs.fetchgit {
     url = "https://github.com/trapd00r/LS_COLORS";
     rev = "6fb72eecdcb533637f5a04ac635aa666b736cf50";
@@ -27,6 +40,7 @@ in
     pkgs.fishPlugins.foreign-env # For fish
     pkgs.unrar
     pkgs.ripgrep
+    curltime
   ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -170,6 +184,5 @@ in
 
   }; # Close zsh
   home.file.".p10k.zsh".source = ~/home-manager-config/.p10k.zsh;
-
 
 } # Close all
