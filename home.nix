@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
+  pkgs_x86_64 = import <nixpkgs> { localSystem = "x86_64-darwin"; overlays = []; };
   curltime = pkgs.writeShellScriptBin "curltime" ''
     #!${pkgs.stdenv.shell}
     curl -w @- -o /dev/null -s "$@" <<'EOF'
@@ -40,6 +41,9 @@ in
     pkgs.fishPlugins.foreign-env # For fish
     pkgs.unrar
     pkgs.ripgrep
+    pkgs.youtube-dl
+    pkgs.yt-dlp
+    pkgs.ffmpeg
     curltime
   ];
   # Let Home Manager install and manage itself.
