@@ -72,7 +72,11 @@ in
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "rohan";
-  home.homeDirectory = "/Users/rohan";
+	home.homeDirectory = (if pkgs.stdenv.isDarwin then 
+		  "/Users/rohan"
+		else
+		  "/home/rohan"
+	);
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -33,3 +33,5 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 
 # Autocomplete uses ls-colors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+set -o vi
