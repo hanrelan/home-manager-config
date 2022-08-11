@@ -187,6 +187,7 @@ in
         { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "Aloxaf/fzf-tab"; }
+				{ name = "softmoth/zsh-vim-mode"; }
       ];
     };
 
