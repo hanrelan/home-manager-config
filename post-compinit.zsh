@@ -34,3 +34,22 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 # Autocomplete uses ls-colors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# Assumes miniconda installation at /home/rohan/programming/miniconda3
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+DIR='/home/rohan/programming/miniconda3'
+if [ -d "$DIR" ]; then
+	__conda_setup="$('/home/rohan/programming/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+			eval "$__conda_setup"
+	else
+			if [ -f "/home/rohan/programming/miniconda3/etc/profile.d/conda.sh" ]; then
+					. "/home/rohan/programming/miniconda3/etc/profile.d/conda.sh"
+			else
+					export PATH="/home/rohan/programming/miniconda3/bin:$PATH"
+			fi
+	fi
+	unset __conda_setup
+fi
+# <<< conda initialize <<<
