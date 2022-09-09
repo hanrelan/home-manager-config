@@ -2,7 +2,7 @@
 
 with pkgs;
 let basePackages = [
-  elixir_1_12
+  elixir
   postgresql_14
 ];
 in
