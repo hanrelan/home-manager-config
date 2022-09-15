@@ -166,6 +166,14 @@ in
       ll = "${pkgs.coreutils}/bin/ls --color=auto -F -l";
     };
 
+    initExtraFirst = ''
+	# Nix
+	if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+	  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+	fi
+	# End Nix
+   '';
+
     initExtraBeforeCompInit = ''
       eval $(${pkgs.coreutils}/bin/dircolors -b ${LS_COLORS}/LS_COLORS)
     '';
