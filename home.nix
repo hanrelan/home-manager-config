@@ -44,6 +44,7 @@ in
     pkgs.youtube-dl
     pkgs.yt-dlp
     pkgs.ffmpeg
+		pkgs.screen
     curltime
   ];
   # Let Home Manager install and manage itself.
@@ -201,5 +202,6 @@ in
 
   }; # Close zsh
   home.file.".p10k.zsh".source = ~/home-manager-config/.p10k.zsh;
+	home.file.".screenrc".source = ~/home-manager-config/screenrc;
 
 } # Close all
