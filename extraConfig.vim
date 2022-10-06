@@ -33,7 +33,7 @@ set smartcase
 set incsearch
 set backspace=eol,start,indent
 set whichwrap=h,l,~,[,]
-set clipboard=unnamedplus
+set clipboard^=unnamedplus
 if system("uname") == "Darwin\n"
   set clipboard=unnamed
 endif
