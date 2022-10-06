@@ -53,3 +53,26 @@ if [ -d "$DIR" ]; then
 	unset __conda_setup
 fi
 # <<< conda initialize <<<
+#
+case "$TERM" in
+    xterm*|rxvt*|alacritty*)
+        function xtitle () {
+            builtin print -n -- "\e]0;$@\a"
+        }
+        ;;
+    screen)
+        function xtitle () {
+            builtin print -n -- "\ek$@\e\\"
+        }
+        ;;
+    *)
+        function xtitle () {
+        }
+esac
+
+function precmd () {
+    xtitle "$(print -P $HOST: zsh '(%~)')"
+}
+ function preexec () {
+    xtitle "$(print -P zsh '(%~)'): $1"
+}

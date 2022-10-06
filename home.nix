@@ -45,6 +45,7 @@ in
     pkgs.yt-dlp
     pkgs.ffmpeg
 		pkgs.screen
+		pkgs.silver-searcher
     curltime
   ];
   # Let Home Manager install and manage itself.
