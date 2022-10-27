@@ -256,7 +256,9 @@ hc rule class='Steam' floating=on
 hc rule class='csgo_linux64' floating=on
 hc rule title~'scratchpad' floating=on floatplacement=center floating_geometry=1000x500
 
+killall xss-lock
+hc spawn xss-lock -l ~/.config/herbstluftwm/transfer-sleep-lock-i3lock-fancy.sh
 killall picom
 hc spawn picom
-killall xss-lock
-hc spawn xss-lock -l ~/bin/transfer-sleep-lock-i3lock-fancy.sh
+killall xautolock
+hc spawn xautolock -time 15 -locker 'systemctl suspend' &
