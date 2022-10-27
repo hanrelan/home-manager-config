@@ -67,6 +67,9 @@ let g:explVertical=1
 let g:explStartRight=1
 let g:explWinSize=50
 
+" Make %% in command mode expand to the current file's path
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:p:h').'/' : '%%'
+
 " File completion in command line after :e
 set wildmenu
 set wildmode=full
