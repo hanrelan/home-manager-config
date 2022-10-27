@@ -1,0 +1,262 @@
+#!/usr/bin/env bash
+
+# this is a simple config for herbstluftwm
+
+hc() {
+    herbstclient "$@"
+}
+
+hc emit_hook reload
+# xrandr --auto && xrandr --auto --output HDMI-1-0 --right-of HDMI-0
+xrandr --output USB-C-0.8 --mode 2560x1440 --pos 0x0 --rotate right --output HDMI-0 --mode 2560x1440 --pos 1440x560 --rotate normal 
+killall alttab
+alttab -d 1 -w 1 &
+TERMINAL=gnome-terminal
+
+xsetroot -solid '#000000'
+
+# remove all existing keybindings
+hc keyunbind --all
+hc set_layout max
+
+# keybindings
+# if you have a super key you will be much happier with Mod set to Mod4
+#Mod=Mod1    # Use alt as the main modifier
+Mod=Mod4   # Use the super key as the main modifier
+
+hc keybind F3 spawn firefox
+hc keybind $Mod-space spawn rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/polybar/cuts/scripts/rofi/launcher.rasi
+hc keybind $Mod-w spawn rofi -no-config -no-lazy-grab -show window -theme ~/.config/polybar/cuts/scripts/rofi/window.rasi -window-command "herbstclient bring {window}"
+
+hc keybind $Mod-Shift-q quit
+hc keybind $Mod-Shift-r reload
+hc keybind Mod1+F4 close_or_remove
+hc keybind F2 spawn "${TERMINAL:-xterm}" # use your $TERMINAL with xterm as fallback
+
+# basic movement in tiling and floating mode
+# focusing clients
+hc keybind $Mod-Left  chain , focus --level=tabs left , spawn warp.sh
+hc keybind $Mod-Down  chain , focus down , spawn warp.sh
+hc keybind $Mod-Up    chain , focus up , spawn warp.sh
+hc keybind $Mod-Right chain , focus --level=tabs right , spawn warp.sh
+hc keybind $Mod-h     chain , focus --level=frame left , spawn warp.sh
+hc keybind $Mod-Control-h     chain , focus --level=tabs left , spawn warp.sh
+hc keybind $Mod-j     chain , focus down , spawn warp.sh
+hc keybind $Mod-k     chain , focus up , spawn warp.sh
+hc keybind $Mod-l     chain , focus --level=frame right , spawn warp.sh
+hc keybind $Mod-Control-l     chain , focus --level=tabs right , spawn warp.sh
+
+# moving clients in tiling and floating mode
+hc keybind $Mod-Shift-Left  shift left
+hc keybind $Mod-Shift-Down  shift down
+hc keybind $Mod-Shift-Up    shift up
+hc keybind $Mod-Shift-Right shift right
+hc keybind $Mod-Shift-h     shift left
+hc keybind $Mod-Shift-j     shift down
+hc keybind $Mod-Shift-k     shift up
+hc keybind $Mod-Shift-l     shift right
+
+# splitting frames
+# create an empty frame at the specified direction
+hc keybind $Mod-s       chain , split   right  0.5 , focus right
+hc keybind $Mod-Shift-s chain , split   bottom   0.5 , focus down
+# let the current frame explode into subframes
+hc keybind $Mod-Control-space split explode
+hc keybind F9 spawn ~/.config/herbstluftwm/windowmenu.sh
+# Load the layout for the portrait monitor
+hc keybind $Mod-Shift-p load "(split vertical:0.2524:1 (clients max:0) (split vertical:0.8205:0 (clients max:0) (clients max:0)))"
+
+
+# resizing frames and floating clients
+resizestep=0.05
+# hc keybind $Mod-Control-h       resize left +$resizestep
+hc keybind $Mod-Control-j       resize down +$resizestep
+hc keybind $Mod-Control-k       resize up +$resizestep
+# hc keybind $Mod-Control-l       resize right +$resizestep
+hc keybind $Mod-Control-Left    resize left +$resizestep
+hc keybind $Mod-Control-Down    resize down +$resizestep
+hc keybind $Mod-Control-Up      resize up +$resizestep
+hc keybind $Mod-Control-Right   resize right +$resizestep
+
+# tags
+tag_names=( {1..9} )
+tag_keys=( {1..9} 0 )
+
+hc rename default "${tag_names[0]}" || true
+for i in "${!tag_names[@]}" ; do
+    hc add "${tag_names[$i]}"
+    key="${tag_keys[$i]}"
+    if [ -n "$key" ] ; then
+        hc keybind "$Mod-$key" use_index "$i"
+        hc keybind "$Mod-Shift-$key" move_index "$i"
+    fi
+done
+
+# cycle through tags
+hc keybind $Mod-period use_index +1 --skip-visible
+hc keybind $Mod-comma  use_index -1 --skip-visible
+
+# layouting
+hc keybind $Mod-r remove
+hc keybind $Mod-g floating toggle
+hc keybind $Mod-m fullscreen toggle
+hc keybind $Mod-Shift-g set_attr clients.focus.floating toggle
+hc keybind $Mod-Shift-d set_attr clients.focus.decorated toggle
+hc keybind $Mod-Shift-m set_attr clients.focus.minimized true
+hc keybind $Mod-Control-m jumpto last-minimized
+hc keybind $Mod-p pseudotile toggle
+# The following cycles through the available layouts within a frame, but skips
+# layouts, if the layout change wouldn't affect the actual window positions.
+# I.e. if there are two windows within a frame, the grid layout is skipped.
+hc keybind $Mod-t                                                           \
+            or , and . compare tags.focus.curframe_wcount = 2                   \
+                     . cycle_layout +1 vertical horizontal max vertical grid    \
+               , cycle_layout +1
+
+# mouse
+hc mouseunbind --all
+hc mousebind $Mod-Button1 move
+hc mousebind $Mod-Button2 zoom
+hc mousebind $Mod-Button3 resize
+
+# focus
+hc keybind $Mod-q   cycle_monitor
+hc keybind $Mod-Tab         cycle +1
+hc keybind $Mod-Shift-Tab   cycle -1
+hc keybind $Mod-c cycle_all +1
+hc keybind $Mod-Shift-c cycle_all -1
+hc keybind $Mod-i jumpto urgent
+
+hc keybind $Mod-d spawn ~/.config/herbstluftwm/scratchpad.sh
+
+# theme
+hc attr theme.tiling.reset 1
+hc attr theme.floating.reset 1
+hc set frame_border_active_color '#222222cc'
+hc set frame_border_normal_color '#101010cc'
+hc set frame_bg_normal_color '#565656'
+hc set frame_bg_active_color '#787878'
+hc set frame_border_width 1
+hc set show_frame_decorations 'focused_if_multiple'
+hc set frame_transparent_width 5
+hc set frame_gap 4
+
+hc attr theme.title_height 15
+hc attr theme.title_when always
+hc attr theme.title_font 'Dejavu Sans:pixelsize=12'  # example using Xft
+# hc attr theme.title_font '-*-fixed-medium-r-*-*-13-*-*-*-*-*-*-*'
+hc attr theme.title_depth 3  # space below the title's baseline
+hc attr theme.active.color '#'
+hc attr theme.title_color '#ffffff'
+hc attr theme.normal.color '#323232'
+hc attr theme.urgent.color '#7811A1'
+hc attr theme.tab_color '#1F1F1F'
+hc attr theme.active.tab_color '#1F1F1F'
+hc attr theme.active.tab_outer_color '#1F1F1F'
+hc attr theme.active.tab_title_color '#ababab'
+hc attr theme.normal.title_color '#1f1f1f'
+hc attr theme.inner_width 1
+hc attr theme.inner_color black
+hc attr theme.border_width 3
+hc attr theme.floating.border_width 4
+hc attr theme.floating.outer_width 1
+hc attr theme.floating.outer_color black
+hc attr theme.urgent.inner_color '#9A65B0'
+hc attr theme.normal.inner_color '#606060'
+hc attr theme.tiling.outer_width 1
+hc attr theme.background_color '#000000'
+
+hc set window_gap 0
+hc set frame_padding 0
+hc set smart_window_surroundings off
+hc set smart_frame_surroundings on
+hc set mouse_recenter_gap 0
+
+hc set frame_border_active_color '#813d9c'
+hc set frame_border_normal_color '#241f31'
+hc set frame_border_width 2
+hc set always_show_frame 1
+hc set frame_bg_transparent 1
+hc set frame_transparent_width 5
+hc set frame_gap 4
+
+hc attr theme.active.color '#946cfb'
+hc attr theme.normal.color '#9a9996'
+hc attr theme.urgent.color '#ffbe6f'
+hc attr theme.inner_width 1
+hc attr theme.inner_color '#9a9996'
+hc attr theme.border_width 3
+hc attr theme.floating.border_width 4
+hc attr theme.floating.outer_width 1
+hc attr theme.floating.outer_color '#9a9996'
+hc attr theme.active.inner_color '#946cfb'
+hc attr theme.active.outer_color '#946cfb'
+hc attr theme.background_color '#121212'
+# copy inner color to outer_color
+for state in active urgent normal ; do
+    hc substitute C theme.${state}.inner_color \
+        attr theme.${state}.outer_color C
+done
+
+hc set window_gap 0
+hc set frame_padding 2
+hc pad :0 16 0 0 0
+
+
+# rules
+hc unrule -F
+#hc rule class=XTerm tag=3 # move all xterms to tag 3
+hc rule focus=on # normally focus new clients
+hc rule floatplacement=smart
+#hc rule focus=off # normally do not focus new clients
+# give focus to most common terminals
+#hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' floating=on
+hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
+hc rule fixedsize floating=on
+
+hc set tree_style '╾│ ├└╼─┐'
+
+# unlock, just to be sure
+hc unlock
+
+# do multi monitor setup here, e.g.:
+# hc set_monitors 1280x1024+0+0 1280x1024+1280+0
+# or simply:
+hc detect_monitors
+
+# find the panel
+killall -q polybar
+# Wait until the processes have been shut down
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+panel=~/.config/herbstluftwm/panel.sh
+#"$panel" HDMI-1-0
+# /etc/xdg/herbstluftwm/panel.sh 0
+[ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
+"$panel"
+# for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+# 	"$panel" "$m" &
+# done
+#for monitor in $(hc list_monitors | cut -d: -f1) ; do
+#    # start it on each monitor
+#    "$panel" "$monitor" &
+#done
+# only show herbstluftwm panel on extra monitor
+# "$panel" 1 &
+
+hc set default_frame_layout max
+hc set show_frame_decorations all
+hc set frame_bg_transparent off
+hc set focus_follows_mouse true
+
+hc rule class='systemsettings' pseudotile=on
+hc rule class='Gnome-calculator' pseudotile=on
+hc rule class='Steam' floating=on
+hc rule class='csgo_linux64' floating=on
+hc rule title~'scratchpad' floating=on floatplacement=center floating_geometry=1000x500
+
+killall picom
+hc spawn picom
+killall xss-lock
+hc spawn xss-lock -l ~/bin/transfer-sleep-lock-i3lock-fancy.sh
