@@ -128,6 +128,7 @@ hc keybind $Mod-Shift-c cycle_all -1
 hc keybind $Mod-i jumpto urgent
 
 hc keybind $Mod-d spawn ~/.config/herbstluftwm/scratchpad.sh
+hc keybind Control-Mod1-Delete spawn ~/.config/polybar/cuts/scripts/powermenu.sh
 
 # theme
 hc attr theme.tiling.reset 1
@@ -254,6 +255,7 @@ hc rule class='systemsettings' pseudotile=on
 hc rule class='Gnome-calculator' pseudotile=on
 hc rule class='Steam' floating=on
 hc rule class='csgo_linux64' floating=on
+
 hc rule title~'scratchpad' floating=on floatplacement=center floating_geometry=1000x500
 
 killall xss-lock
