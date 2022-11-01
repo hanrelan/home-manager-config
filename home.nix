@@ -1,7 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-  pkgs_x86_64 = import <nixpkgs> { localSystem = "x86_64-darwin"; overlays = []; };
+  pkgs_x86_64 = import <nixpkgs> {
+    localSystem = "x86_64-darwin";
+    overlays = [ ];
+  };
   curltime = pkgs.writeShellScriptBin "curltime" ''
     #!${pkgs.stdenv.shell}
     curl -w @- -o /dev/null -s "$@" <<'EOF'
@@ -20,20 +23,15 @@ let
     rev = "6fb72eecdcb533637f5a04ac635aa666b736cf50";
     sha256 = "0czqgizxq7ckmqw9xbjik7i1dfwgc1ci8fvp1fsddb35qrqi857a";
   };
-  comma = import
-    (pkgs.fetchFromGitHub {
-      owner = "Shopify";
-      repo = "comma";
-      rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
-      sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
-    })
-    { };
-in
-{
+  comma = import (pkgs.fetchFromGitHub {
+    owner = "Shopify";
+    repo = "comma";
+    rev = "4a62ec17e20ce0e738a8e5126b4298a73903b468";
+    sha256 = "0n5a3rnv9qnnsrl76kpi6dmaxmwj1mpdd2g0b4n1wfimqfaz6gi1";
+  }) { };
+in {
   nixpkgs.config = {
-    allowUnfreePredicate = p: builtins.elem (lib.getName p) [
-      "unrar"
-    ];
+    allowUnfreePredicate = p: builtins.elem (lib.getName p) [ "unrar" ];
   };
   home.packages = [
     # comma # Comma lets you run commands that you don't have installed by prepending a ,
@@ -44,9 +42,10 @@ in
     pkgs.youtube-dl
     pkgs.yt-dlp
     pkgs.ffmpeg
-		pkgs.screen
-		pkgs.silver-searcher
+    pkgs.screen
+    pkgs.silver-searcher
     curltime
+		(pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -74,11 +73,8 @@ in
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "rohan";
-	home.homeDirectory = (if pkgs.stdenv.isDarwin then 
-		  "/Users/rohan"
-		else
-		  "/home/rohan"
-	);
+  home.homeDirectory =
+    (if pkgs.stdenv.isDarwin then "/Users/rohan" else "/home/rohan");
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -96,11 +92,7 @@ in
     enable = true;
     userName = "Rohan Relan";
     userEmail = "roresemail@gmail.com";
-    extraConfig = {
-      init = {
-        defaultBranch = "main";
-      };
-    };
+    extraConfig = { init = { defaultBranch = "main"; }; };
   };
 
   programs.neovim = {
@@ -123,17 +115,15 @@ in
 
   programs.fish = {
     enable = true;
-    plugins = [
-      {
-        name = "foreign-env";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "plugin-foreign-env";
-          rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
-          sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
-        };
-      }
-    ];
+    plugins = [{
+      name = "foreign-env";
+      src = pkgs.fetchFromGitHub {
+        owner = "oh-my-fish";
+        repo = "plugin-foreign-env";
+        rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
+        sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
+      };
+    }];
     shellAliases = {
       ls = "${pkgs.coreutils}/bin/ls --color=auto -F";
       ll = "${pkgs.coreutils}/bin/ls --color=auto -F -l";
@@ -169,12 +159,12 @@ in
     };
 
     initExtraFirst = ''
-	# Nix
-	if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-	  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-	fi
-	# End Nix
-   '';
+      # Nix
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+      # End Nix
+    '';
 
     initExtraBeforeCompInit = ''
       eval $(${pkgs.coreutils}/bin/dircolors -b ${LS_COLORS}/LS_COLORS)
@@ -188,21 +178,37 @@ in
       fi
     '';
 
-
     zplug = {
       enable = true;
       plugins = [
         { name = "zsh-users/zsh-autosuggestions"; }
         { name = "zsh-users/zsh-completions"; }
-        { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
+        {
+          name = "romkatv/powerlevel10k";
+          tags = [ "as:theme" "depth:1" ];
+        }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "Aloxaf/fzf-tab"; }
-				{ name = "jeffreytse/zsh-vi-mode"; }
+        { name = "jeffreytse/zsh-vi-mode"; }
       ];
     };
 
   }; # Close zsh
   home.file.".p10k.zsh".source = ~/home-manager-config/.p10k.zsh;
-	home.file.".screenrc".source = ~/home-manager-config/screenrc;
+  home.file.".screenrc".source = ~/home-manager-config/screenrc;
+
+	fonts.fontconfig.enable = true;
+
+  programs.nnn = {
+    enable = true;
+    package = pkgs.nnn.override ({ withNerdIcons = true; });
+    extraPackages = (if pkgs.stdenv.isDarwin then [
+      pkgs.mediainfo
+    ] else [
+      pkgs.ffmpegthumbnailer
+      pkgs.mediainfo
+      pkgs.sxiv
+    ]);
+  };
 
 } # Close all
