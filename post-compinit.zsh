@@ -76,3 +76,5 @@ function precmd () {
  function preexec () {
     xtitle "$(print -P zsh '(%~)'): $1"
 }
+
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=0'

@@ -156,6 +156,7 @@ in {
     shellAliases = {
       ls = "${pkgs.coreutils}/bin/ls --color=auto -F";
       ll = "${pkgs.coreutils}/bin/ls --color=auto -F -l";
+			n = "${pkgs.nnn}/bin/nnn -A";
     };
 
     initExtraFirst = ''
@@ -189,7 +190,7 @@ in {
         }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "Aloxaf/fzf-tab"; }
-        { name = "jeffreytse/zsh-vi-mode"; }
+				{ name = "jeffreytse/zsh-vi-mode"; }
       ];
     };
 
@@ -209,6 +210,11 @@ in {
       pkgs.mediainfo
       pkgs.sxiv
     ]);
+		bookmarks = {
+			p = "~/programming";
+			c = "~/home-manager-config";
+			d = "~/Downloads";
+		};
   };
 
 } # Close all
