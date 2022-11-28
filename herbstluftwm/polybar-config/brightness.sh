@@ -14,20 +14,21 @@ UPDATE="polybar-msg hook brightnesscontrol 1"
 case $1 in
 	get)
 		BRIGHTNESS1=`ddcutil getvcp 10 --display 1 | awk '{print $9}' | sed 's/,//'`
-		BRIGHTNESS2=`ddcutil getvcp 10 --display 2 | awk '{print $9}' | sed 's/,//'`
+		# BRIGHTNESS2=`ddcutil getvcp 10 --display 2 | awk '{print $9}' | sed 's/,//'`
 
-		echo "$BRIGHTNESS1 / $BRIGHTNESS2"
+		# echo "$BRIGHTNESS1 / $BRIGHTNESS2"
+		echo "$BRIGHTNESS1"
 	;;
 
 	increase)
 		ddcutil setvcp 10 + 10 --display 1
-		ddcutil setvcp 10 + 10 --display 2
+		# ddcutil setvcp 10 + 10 --display 2
 		eval "$UPDATE"
 	;;
 
 	decrease)
 		ddcutil setvcp 10 - 10 --display 1
-		ddcutil setvcp 10 - 10 --display 2
+		# ddcutil setvcp 10 - 10 --display 2
 		eval "$UPDATE"
 	;;
 	set)
@@ -43,7 +44,7 @@ case $1 in
 			ddcutil setvcp 10 $b2 --display 2
 		else
 			ddcutil setvcp 10 $result --display 1
-			ddcutil setvcp 10 $result --display 2
+			# ddcutil setvcp 10 $result --display 2
 		fi
 		eval "$UPDATE"
 	;;
