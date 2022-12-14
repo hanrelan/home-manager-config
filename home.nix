@@ -44,6 +44,7 @@ in {
     pkgs.ffmpeg
     pkgs.screen
     pkgs.silver-searcher
+		pkgs.asdf-vm
     curltime
 		(pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
@@ -177,6 +178,9 @@ in {
       if [ -f /opt/homebrew/bin/brew ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
+			if [ -f ${pkgs.asdf-vm}/etc/profile.d/asdf-prepare.sh ]; then
+				. ${pkgs.asdf-vm}/etc/profile.d/asdf-prepare.sh
+			fi
     '';
 
     zplug = {
