@@ -63,7 +63,6 @@ hc keybind $Mod-Shift-s chain , split   bottom   0.5 , focus down
 # let the current frame explode into subframes
 hc keybind $Mod-Control-space split explode
 hc keybind F9 spawn ~/.config/herbstluftwm/windowmenu.sh
-# Load the layout for the portrait monitor
 hc keybind $Mod-Shift-p load "(split horizontal:0.3198:0 (clients vertical:0) (split horizontal:0.6199:0 (clients vertical:0) (clients vertical:0)))"
 
 
