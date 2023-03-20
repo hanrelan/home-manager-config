@@ -140,6 +140,11 @@ in {
 
       eval (${pkgs.coreutils}/bin/dircolors -c ${LS_COLORS}/LS_COLORS)
       fish_vi_key_bindings
+			 #>>> conda initialize >>>
+			 # !! Contents within this block are managed by 'conda init' !!
+			 eval /home/rohan/programming/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+			 # <<< conda initialize <<<
+
     '';
   };
 
@@ -193,7 +198,7 @@ in {
           tags = [ "as:theme" "depth:1" ];
         }
         { name = "zsh-users/zsh-syntax-highlighting"; }
-        { name = "Aloxaf/fzf-tab"; }
+				{ name = "Aloxaf/fzf-tab"; }
       ];
     };
 
