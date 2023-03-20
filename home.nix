@@ -194,7 +194,6 @@ in {
         }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "Aloxaf/fzf-tab"; }
-				{ name = "jeffreytse/zsh-vi-mode"; }
       ];
     };
 
