@@ -46,6 +46,7 @@ in {
     pkgs.silver-searcher
 		pkgs.asdf-vm
     curltime
+		(import (fetchTarball https://install.devenv.sh/latest)).default
 		(pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
   # Let Home Manager install and manage itself.
@@ -141,6 +142,8 @@ in {
       eval (${pkgs.coreutils}/bin/dircolors -c ${LS_COLORS}/LS_COLORS)
       fish_vi_key_bindings
 			 eval $HOME/programming/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+			# homebrew
+			eval (/opt/homebrew/bin/brew shellenv)
 
     '';
   };
