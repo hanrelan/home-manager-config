@@ -45,6 +45,7 @@ in {
     pkgs.screen
     pkgs.silver-searcher
 		pkgs.asdf-vm
+		pkgs.devbox
     curltime
 		(import (fetchTarball https://install.devenv.sh/latest)).default
 		(pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
@@ -152,7 +153,9 @@ in {
     enable = true;
     enableCompletion = true;
     completionInit = "autoload -U compinit && compinit -D";
-    enableAutosuggestions = true;
+		autosuggestion = {
+			enable = true;
+		};
     autocd = true;
     history = {
       path = "${config.xdg.dataHome}/zsh/.zsh_history";
